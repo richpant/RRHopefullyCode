@@ -19,9 +19,11 @@ public final class ForwardTest extends LinearOpMode {
             waitForStart();
 
             Actions.runBlocking(
+
                 drive.actionBuilder(drive.pose)
                         .lineToX(30)
-                        .splineTo(new Vector2d(20,20), Math.PI/2)
+
+                        .splineTo(new Vector2d(40,40), Math.PI/2)
                         .build());
         } else if (TuningOpModes.DRIVE_CLASS.equals(TankDrive.class)) {
             TankDrive drive = new TankDrive(hardwareMap, new Pose2d(0, 0, 0));

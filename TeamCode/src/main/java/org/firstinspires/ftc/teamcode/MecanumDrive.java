@@ -37,8 +37,10 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
+import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.messages.DriveCommandMessage;
 import org.firstinspires.ftc.teamcode.messages.MecanumCommandMessage;
@@ -52,6 +54,8 @@ import java.util.List;
 
 @Config
 public final class MecanumDrive {
+
+
     public static class Params {
         // IMU orientation
         // TODO: fill in these values based on
@@ -62,29 +66,29 @@ public final class MecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.UP; //FORWARD
 
         // drive model parameters
-        public double inPerTick = 0.00293938; //0.0056644488;
-        public double lateralInPerTick = 0.0038267174782899887; //1, shouldn't be negative
-        public double trackWidthTicks = 4962.946530901971;//4691.766329432274
+        public double inPerTick = 0.00295007; //0.0056644488;
+        public double lateralInPerTick = 0.002119823586548454; //1, shouldn't be negative
+        public double trackWidthTicks = 4956.864139394978;//4691.766329432274
 
         // feedforward parameters (in tick units)
-        public double kS = 1.480825407105618; //01.0422430830442888
-        public double kV = 0.00032851527070750195; //0.00042225073154485
-        public double kA = 0.00007
+        public double kS = 1.299748822905606; //01.0422430830442888
+        public double kV = 0.00036340519841384085; //0.00042225073154485 changed 36 from 39
+        public double kA = 0.00009//0.00007
                 ; //0.00035
 
         // path profile parameters (in inches)
-        public double maxWheelVel = 50;
+        public double maxWheelVel = 40;
         public double minProfileAccel = -30;
-        public double maxProfileAccel = 50;
+        public double maxProfileAccel = 40;
 
         // turn profile parameters (in radians)
         public double maxAngVel = Math.PI; // shared with path
         public double maxAngAccel = Math.PI;
 
         // path controller gains
-        public double axialGain = 0.0;
-        public double lateralGain = 0.0;
-        public double headingGain = 0.0; // shared with turn
+        public double axialGain = 1.8;
+        public double lateralGain = 2;
+        public double headingGain = 2.3; // shared with turn
 
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;
@@ -106,7 +110,9 @@ public final class MecanumDrive {
     public final AccelConstraint defaultAccelConstraint =
             new ProfileAccelConstraint(PARAMS.minProfileAccel, PARAMS.maxProfileAccel);
 
-    public final DcMotorEx leftFront, leftBack, rightBack, rightFront;
+    public final DcMotorEx leftFront, leftBack, rightBack, rightFront, lift, gear;
+
+    public final Servo clawL, clawR, pivot, droneServo;
 
     public final VoltageSensor voltageSensor;
 
@@ -206,16 +212,24 @@ public final class MecanumDrive {
         leftBack = hardwareMap.get(DcMotorEx.class, "lB");
         rightBack = hardwareMap.get(DcMotorEx.class, "rB");
         rightFront = hardwareMap.get(DcMotorEx.class, "rF");
+        lift = hardwareMap.get(DcMotorEx.class, "lift");
+        gear = hardwareMap.get(DcMotorEx.class, "gear");
+        pivot = hardwareMap.get(Servo.class, "pivot");
+        //claw = hardwareMap.get(Servo.class, "claw");
+        droneServo = hardwareMap.get(Servo.class, "droneServo");
+        clawL = hardwareMap.get(Servo.class, "clawL");
+        clawR = hardwareMap.get(Servo.class, "clawR");
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.FORWARD);
         rightBack.setDirection(DcMotor.Direction.FORWARD);
+        gear.setDirection(DcMotor.Direction.REVERSE);
+        gear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        /*leftFront.setDirection(DcMotor.Direction.FORWARD);
-        leftBack.setDirection(DcMotor.Direction.FORWARD);
-        rightFront.setDirection(DcMotor.Direction.REVERSE);
-        rightBack.setDirection(DcMotor.Direction.REVERSE);*/
+        gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -490,4 +504,89 @@ public final class MecanumDrive {
                 0.25, 0.1
         );
     }
+
+    public Action closeL(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawL.setPosition(0.33); return false;
+            }
+        };
+    }
+
+
+    public Action openL(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawL.setPosition(0.45); return false;
+            }
+        };
+    }
+    public Action openR(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawR.setPosition(0.25); return false;
+            }
+        };
+    }
+    public Action gearupABit(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+               gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gear.setTargetPosition(126);
+                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gear.setPower(0.333);
+                return false;
+            }
+        };
+    }
+    public Action up(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                pivot.setPosition(0.8); return false;
+            }
+        };
+    }
+    public Action pivotPickUp(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                pivot.setPosition(0.85); return false;
+            }
+        };
+    }
+    public Action liftToScore(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                lift.setTargetPosition(-700);
+                lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                lift.setPower(-0.7);
+                return false;
+            }
+        };
+    }
+
+
+
+   /* public Action pivot() {
+        return new Action() {
+            private boolean intialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                if (!intialized) {
+                    pivot.setPosition(0.8);
+                    intialized = true;
+                }
+
+
+            }
+        };
+    }*/
 }
