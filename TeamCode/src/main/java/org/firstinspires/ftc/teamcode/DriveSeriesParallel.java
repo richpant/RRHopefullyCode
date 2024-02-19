@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="Drive")
-public class Drive extends LinearOpMode {
+@TeleOp(name="DriveSeriesParallel")
+public class DriveSeriesParallel extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor lF        = null; //c0
@@ -22,7 +22,6 @@ public class Drive extends LinearOpMode {
     private Servo clawR       = null; //es2
 
     private Servo droneServo  = null; //es5
-    private Servo WheelServo  = null; //es4
 
     @Override
     public void runOpMode() {
@@ -36,12 +35,11 @@ public class Drive extends LinearOpMode {
         clawL = hardwareMap.get(Servo.class, "clawL");
         clawR = hardwareMap.get(Servo.class, "clawR");
         droneServo = hardwareMap.get(Servo.class, "droneServo");
-        WheelServo = hardwareMap.get(Servo.class, "WheelServo");
-        //clawL.setPosition(.45);
-        //clawR.setPosition(.25);
+        clawL.setPosition(.45);
+        clawR.setPosition(.25);
         //pivot.setPosition(0);
-        WheelServo.setPosition(0.85);
-        droneServo.setPosition(0.6);
+
+        droneServo.setPosition(0.5);
         lF.setDirection(DcMotor.Direction.REVERSE);
         lB.setDirection(DcMotor.Direction.REVERSE);
         //rF.setDirection(DcMotor.Direction.REVERSE);
@@ -60,7 +58,7 @@ public class Drive extends LinearOpMode {
         lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         gear.setTargetPosition(0);
         lift.setTargetPosition(0);
-        pivot.setPosition(.835);
+        pivot.setPosition(.82);
         clawL.setPosition(.45);
         clawR.setPosition(.25);
 
@@ -111,11 +109,6 @@ public class Drive extends LinearOpMode {
                 rF.setPower(0.2 * rFPower);
                 lB.setPower(0.2 * lBPower);
                 rB.setPower(0.2 * rBPower); }
-            //----------------------------WheelServo----------------------------\\
-            if(gamepad1.y){
-                WheelServo.setPosition(0.5); }
-
-
 
             //----------------------------pivot----------------------------\\
 
@@ -136,17 +129,17 @@ public class Drive extends LinearOpMode {
             telemetry.update();*/
 
             //----------------------------claw----------------------------\\
-//left
-            if (gamepad2.left_bumper)
-            {clawL.setPosition(0.33); } //close
 
-            else {clawL.setPosition(.42);} //open
-//right
-            if (gamepad2.right_bumper)
-            {clawR.setPosition(0.37); } //close
+            if (gamepad2.left_bumper) {
+                clawL.setPosition(0.3); //close
+                ; }
+            else {clawL.setPosition(.405);} //open
 
-            else {clawR.setPosition(.28); } //open
-
+            if (gamepad2.right_bumper) {
+                //
+                clawR.setPosition(0.4); } //close
+            else {; //
+                clawR.setPosition(.295); } //open
 //            if (gamepad2.right_bumper || gamepad2.left_bumper) {
 //                clawL.setPosition(0.33); //close
 //                clawR.setPosition(0.37); }
@@ -160,8 +153,8 @@ public class Drive extends LinearOpMode {
             //----------------------------droneServo----------------------------\\
 
             if (gamepad1.a) {
-                droneServo.setPosition(1); }
-            else {droneServo.setPosition(0.6); }
+                droneServo.setPosition(0.75); }
+            else {droneServo.setPosition(0.5); }
 
 
             //----------------------------lift/gear----------------------------\\
@@ -181,14 +174,10 @@ public class Drive extends LinearOpMode {
                 tfilPosition(2050, 0.8);}
 
 
-            if (gamepad2.dpad_up) { //manual gear up
+            if (gamepad2.dpad_up) {
                 raegup(1); }
-            if (gamepad2.dpad_down) { //manuel gear down
+            if (gamepad2.dpad_down) {
                 raeg(-1); }
-            if (gamepad2.dpad_right) { //manual gear up FOR HANG ONLY
-                gearupHANG(1); }
-            if (gamepad2.dpad_left) { //manuel gear down FOR HANG ONLY
-                geardownHANG(-1); }
             if (gamepad2.left_trigger > .1) {
                 tfil(100, -1);
                 telemetry.addData("lift", lift.getCurrentPosition());}
@@ -196,8 +185,8 @@ public class Drive extends LinearOpMode {
                 tfil(200, 1);
                 telemetry.addData("lift", lift.getCurrentPosition());}
 
-            //if (gamepad2.dpad_left) {
-                //fasttfil(1); }
+            if (gamepad2.dpad_left) {
+                fasttfil(1); }
 
 
             if (gamepad1.x) {gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -211,35 +200,35 @@ public class Drive extends LinearOpMode {
             //---------------High---------------\\
             if (gamepad2.x) {
                 tfilPosition(2700, 1);//Gear value higher = turn back more & Gear Value lower = turn back less OPPOSITE FOR CLAW PIVOT
-                pivot.setPosition(0.25);//0.195
-                raegPosition(850, 1); }//845
+                pivot.setPosition(0.195);//0.14
+                raegPosition(810, 1); }//845
             //---------------Mid---------------\\
             if (gamepad2.y) {
-                raegPosition(890, 1);//900
-                pivot.setPosition(0.25);//0.22
+                raegPosition(860, 1);//900
+                pivot.setPosition(0.19);//0.23
                 tfilPosition(2100, 0.4); }//1450
             //---------------Low---------------\\
             if (gamepad2.b) {
-                raegPosition(870, 1);//900..
-                pivot.setPosition(0.25);//0.19
+                raegPosition(850, 1);//900..
+                pivot.setPosition(0.22);//0.23
                 tfilPosition(1325, 0.4); }//1450
             //---------------Reset---------------\\
             if (gamepad2.a) {
                 tfilPosition(50, 1);
                 raegPosition(5, 0.2);//25
-                pivot.setPosition(0.835); }
+                pivot.setPosition(0.8); }
 
             //----------Driver1-Reset----------\\
             if (gamepad1.b) {
                 tfilPosition(50, 1);
                 raegPosition(120, 0.2);
-                pivot.setPosition(0.2); }//0.10
+                pivot.setPosition(0.10); }
 
             //---------------Hang---------------\\
-//            if (gamepad2.dpad_right) {
-//                raegPosition(625, 0.4);
-//                tfilPosition(2000, .7);
-//                pivot.setPosition(0.8); }
+            if (gamepad2.dpad_right) {
+                raegPosition(625, 0.4);
+                tfilPosition(2000, .7);
+                pivot.setPosition(0.8); }
 
             /*
             if (gamepad2.x && !gamepad2.y) {
@@ -276,22 +265,13 @@ public class Drive extends LinearOpMode {
     public void tfilPosition (int e, double E) {lift.setTargetPosition(e); lift.setPower(E); }
 
     public void raeg (int s) {
-        gear.setPower(0.425);
-        gear.setTargetPosition(gear.getCurrentPosition() + 30 * s);//was *25
-    }
-
-    public void gearupHANG (int s) {
-        gear.setPower(1);
-        gear.setTargetPosition(gear.getCurrentPosition() + 50 * s);//was *25
-    }
-    public void geardownHANG (int s) {
-        gear.setPower(1);
-        gear.setTargetPosition(gear.getCurrentPosition() + 50 * s);//was *25
+        gear.setPower(0.333);
+        gear.setTargetPosition(gear.getCurrentPosition() + 25 * s);
     }
 
     public void raegup (int s) {
-        gear.setPower(0.425);
-        gear.setTargetPosition(gear.getCurrentPosition() + 30 * s);//was *25
+        gear.setPower(0.2);
+        gear.setTargetPosition(gear.getCurrentPosition() + 25 * s);
     }
     public void tfil (int c, int s) {
         lift.setPower(0.95);

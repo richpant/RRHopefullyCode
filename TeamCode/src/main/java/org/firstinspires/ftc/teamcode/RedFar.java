@@ -175,7 +175,7 @@ public class RedFar extends LinearOpMode{
                 telemetry.addData("location?", blocks[i].x);// this gives you just x
                 //TODO ensure your x values of the husky lens are appropriate to the desired areas
                 //----------------------------3----------------------------\\
-                if (blocks[i].x > 210) {
+                if (blocks[i].x > 210 && blocks[i].id== 1) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(drive.up())//lower pivot
@@ -183,35 +183,36 @@ public class RedFar extends LinearOpMode{
                                     .stopAndAdd(geardown())//arm down
                                     .waitSeconds(.5)
                                     .setTangent(180)
-                                    .splineTo(new Vector2d(26,-30.5),2*Math.PI/3)//drive to spike mark
+                                    .splineTo(new Vector2d(29.3,-31.2),2*Math.PI/3)//drive to spike mark
                                     .stopAndAdd(drive.openL())//score purple
                                     .waitSeconds(.5)
-                                    .stopAndAdd(drive.gearupABit())
+                                    .stopAndAdd(drive.gearupABitLil())
                                     .waitSeconds(.5)
                                     .lineToYLinearHeading(-36,2*Math.PI/3)//back up
                                     .waitSeconds(.5)
                                     .stopAndAdd(drive.pivotPickUp())
                                    // .splineToSplineHeading(new Pose2d(-12,-48,0),Math.toRadians(180))
-                                    .splineTo(new Vector2d(7.5, -47),Math.toRadians(270))//line up with white stack
-                                    .waitSeconds(.5)
-                                    .lineToYConstantHeading(-51.5)//forward into white
-                                    .waitSeconds(.5)
+                                    .splineTo(new Vector2d(6, -47),Math.toRadians(270))//line up with white stack
+                                    .waitSeconds(.1)
+                                    .lineToYConstantHeading(-50.6)//forward into white
+                                    .waitSeconds(.1)
                                     .stopAndAdd(drive.closeL())//pick up white
-                                    .waitSeconds(.5)
+                                    .waitSeconds(.1)
                                     .lineToY(-40)
                                     .strafeTo(new Vector2d(8,-40))//line up to go back
-                                    .waitSeconds(.5)
-                                    .lineToYConstantHeading(53)//drive to backboard
-                                    .strafeTo(new Vector2d(26.5,53))//strafe to score
-                                    .waitSeconds(.5)
+                                    .waitSeconds(.22)
+                                    .lineToYConstantHeading(51)//drive to backboard
+                                    .strafeTo(new Vector2d(29,53))//strafe to score
+                                    .waitSeconds(.2)
                                     .stopAndAdd(liftInHere())
-                                    .stopAndAdd(flipToScore())
-                                    .waitSeconds(.5)
+                                    .stopAndAdd(flipToScore2())
+                                    .waitSeconds(.6)
                                     .lineToYConstantHeading(59.5)//back all the way up
-                                    .waitSeconds(.75)
+                                    .waitSeconds(1.2)
                                     .stopAndAdd(drive.openL())//score white
                                     .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(42,59))
+                                    .stopAndAdd(drive.closeL())
+                                    .strafeTo(new Vector2d(38,61))
                                     .waitSeconds(.5)
                                     .stopAndAdd(drive.openR())//score yellow
                                     .waitSeconds(.5)
@@ -219,6 +220,8 @@ public class RedFar extends LinearOpMode{
                                     .stopAndAdd(drive.up())
                                     .stopAndAdd(gearend())
                                     .stopAndAdd(liftIn())
+                                    .stopAndAdd(drive.openL())
+                                    .strafeTo(new Vector2d(9,57))
                                     .build());
                                     sleep(400000);
 
@@ -226,43 +229,45 @@ public class RedFar extends LinearOpMode{
 
                 }
                 //----------------------------2----------------------------\\
-                if (blocks[i].x > 100 && blocks[i].x < 200) {
+                if (blocks[i].x > 100 && blocks[i].x < 200 && blocks[i].id== 1) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(drive.up())//lower pivot
-                                    .waitSeconds(.5)
+                                    .waitSeconds(.4)
                                     .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(.5)
+                                    .waitSeconds(.4)
                                     .setTangent(0)
-                                    .strafeTo(new Vector2d(35.5, -27.5))
+                                    .strafeTo(new Vector2d(35.5, -29))
                                     .stopAndAdd(drive.openL())//score purple
-                                    .waitSeconds(.5)
+                                    .waitSeconds(.4)
                                     .strafeTo(new Vector2d(54, -32))//back away from purple
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(drive.gearupABit())
-                                    .waitSeconds(.5)
+                                    .waitSeconds(.4)
+                                    .stopAndAdd(drive.gearupABitLil())
+                                    .waitSeconds(.4)
                                     .stopAndAdd(drive.pivotPickUp())
                                     // .splineToSplineHeading(new Pose2d(-12,-48,0),Math.toRadians(180))
-                                    .splineTo(new Vector2d(30, -48), Math.toRadians(270))//line up with white stack
+                                    .splineTo(new Vector2d(30.3, -48), Math.toRadians(270))//line up with white stack
                                     .waitSeconds(.5)
-                                    .lineToYConstantHeading(-51.5)//forward into white
+                                    .lineToYConstantHeading(-50.6)//forward into white
                                     .waitSeconds(.5)
                                     .stopAndAdd(drive.closeL())//pick up white
                                     .waitSeconds(.5)
                                     .lineToY(-44)
                                     .strafeTo(new Vector2d(7.5, -44))//line up to go back
                                     .waitSeconds(.5)
-                                    .lineToYConstantHeading(53)//drive to backboard
-                                    .strafeTo(new Vector2d(34.5, 53))//strafe to score
+                                    .lineToYConstantHeading(49)//drive to backboard
                                     .waitSeconds(.5)
-                                    .stopAndAdd(liftInHere2())
-                                    .stopAndAdd(flipToScore2())
+                                    .strafeTo(new Vector2d(33, 53))//strafe to score
                                     .waitSeconds(.5)
-                                    .lineToYConstantHeading(59)//back all the way up
-                                    .waitSeconds(1.2)
+                                    .stopAndAdd(liftInHere3())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(flipToScore())
+                                    .waitSeconds(1)
+                                    .lineToYConstantHeading(57.3)//back all the way up
+                                    .waitSeconds(1)
                                     .stopAndAdd(drive.openR())//score yellow
                                     .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(38, 59))
+                                    .strafeTo(new Vector2d(35, 60.8))
                                     .waitSeconds(.5)
                                     .stopAndAdd(drive.openL())//score white
                                     .waitSeconds(.5)
@@ -270,54 +275,56 @@ public class RedFar extends LinearOpMode{
                                     .stopAndAdd(drive.up())
                                     .stopAndAdd(gearend())
                                     .stopAndAdd(liftIn())
+                                    .strafeTo(new Vector2d(9,56))
                                     .build());
                     sleep(400000);
                 }
 
                 //----------------------------1----------------------------\\
-                if (blocks[i].x < 100) {
+                if (blocks[i].x < 100 && blocks[i].id== 1) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(drive.up())//lower pivot
                                     .waitSeconds(.5)
                                     .stopAndAdd(geardown())//arm down
                                     .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(42,-40.5))
+                                    .strafeTo(new Vector2d(42,-42.5))
                                     .stopAndAdd(drive.openL())//score purple
                                     .waitSeconds(.5)
-                                    .stopAndAdd(drive.gearupABit())
-                                    .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(54,-27))
-                                    .waitSeconds(.5)
+                                    .stopAndAdd(drive.gearUpABitLilRED())
+                                    //.waitSeconds(.5)
+                                    .strafeTo(new Vector2d(54,-30))
+                                    //.waitSeconds(.5)
                                     .stopAndAdd(drive.pivotPickUp())
                                     // .splineToSplineHeading(new Pose2d(-12,-48,0),Math.toRadians(180))
-                                    .splineTo(new Vector2d(7.5, -45),Math.toRadians(270))//line up with white stack
+                                    .splineTo(new Vector2d(7.8, -45),Math.toRadians(270))//line up with white stack
                                     .waitSeconds(.5)
-                                    .lineToYConstantHeading(-51.5)//forward into white
+                                    .lineToYConstantHeading(-49.5)//forward into white
                                     .waitSeconds(.5)
                                     .stopAndAdd(drive.closeL())//pick up white
                                     .waitSeconds(.5)
                                     .lineToY(-40)
                                     .strafeTo(new Vector2d(7.5,-40))//line up to go back
                                     .waitSeconds(.5)
-                                    .lineToYConstantHeading(53)//drive to backboard
-                                    .strafeTo(new Vector2d(27,53))//strafe to score
+                                    .lineToYConstantHeading(49)//drive to backboard
+                                    .strafeTo(new Vector2d(29,52))//strafe to score
                                     .waitSeconds(.5)
                                     .stopAndAdd(liftInHere3())
-                                    .stopAndAdd(flipToScore())
+                                    .stopAndAdd(flipToScore2())
                                     .waitSeconds(.5)
-                                    .lineToYConstantHeading(59)//back all the way up
-                                    .waitSeconds(1)
+                                    .lineToYConstantHeading(57.5)//back all the way up
+                                    .waitSeconds(3)
                                     .stopAndAdd(drive.openR())//score Yellow
                                     .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(36,59))
-                                    .waitSeconds(1)
+                                    .strafeTo(new Vector2d(29,61))
+                                    .waitSeconds(.8)
                                     .stopAndAdd(drive.openL())//score White
                                     .waitSeconds(.5)
                                     .lineToYConstantHeading(57)
                                     .stopAndAdd(drive.up())
                                     .stopAndAdd(gearend())
                                     .stopAndAdd(liftIn())
+                                    .strafeTo(new Vector2d(9,55))
                                     .build());
                     sleep(400000);
                 }
@@ -348,7 +355,7 @@ public class RedFar extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                lift.setTargetPosition(-700);
+                lift.setTargetPosition(-785);
                 lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift.setPower(0.7);
                 return false;
@@ -360,15 +367,27 @@ public class RedFar extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 pivot.setPosition(0.21);
-                gear.setTargetPosition(750);
+                gear.setTargetPosition(738);
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gear.setPower(0.15);
+                gear.setPower(0.11);
 
                 return false;
             }
         };
     }
+    public Action flipToScore2(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                pivot.setPosition(0.21);
+                gear.setTargetPosition(745);
+                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gear.setPower(0.11);
 
+                return false;
+            }
+        };
+    }
 
     public Action gearend(){
         return new Action() {
@@ -393,32 +412,21 @@ public class RedFar extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                lift.setTargetPosition(700);
+                lift.setTargetPosition(900);
                 lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift.setPower(0.7);
                 return false;
             }
         };
     }
-    public Action flipToScore2(){
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                pivot.setPosition(0.21);
-                gear.setTargetPosition(750);
-                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gear.setPower(0.1);
 
-                return false;
-            }
-        };
-    }
+
     public Action liftInHere2(){
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                lift.setTargetPosition(-850);
+                lift.setTargetPosition(-800);
                 lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift.setPower(0.7);
                 return false;
@@ -430,7 +438,7 @@ public class RedFar extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                lift.setTargetPosition(-850);
+                lift.setTargetPosition(-790);
                 lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift.setPower(0.7);
                 return false;

@@ -66,33 +66,33 @@ public final class MecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.UP; //FORWARD
 
         // drive model parameters
-        public double inPerTick = 0.00295007; //0.0056644488;
-        public double lateralInPerTick = 0.002119823586548454; //1, shouldn't be negative
-        public double trackWidthTicks = 4956.864139394978;//4691.766329432274
+        public double inPerTick = 0.00295124; //0.00295007;   119/40322
+        public double lateralInPerTick = 0.001988950594258367; //1, shouldn't be negative
+        public double trackWidthTicks = 5831.487972604501;//4691.766329432274
 
         // feedforward parameters (in tick units)
-        public double kS = 1.299748822905606; //01.0422430830442888
-        public double kV = 0.00036340519841384085; //0.00042225073154485 changed 36 from 39
-        public double kA = 0.00009//0.00007
+        public double kS = 1.948667152143098;//was 1.448667152143098
+        public double kV = 0.0003108198275508043;//was 0.0003708198275508043
+        public double kA = 0.00009;
                 ; //0.00035
 
         // path profile parameters (in inches)
-        public double maxWheelVel = 40;
-        public double minProfileAccel = -30;
-        public double maxProfileAccel = 40;
+        public double maxWheelVel = 67; //was 40
+        public double minProfileAccel = -40; //was -30
+        public double maxProfileAccel = 67; //was 40
 
         // turn profile parameters (in radians)
         public double maxAngVel = Math.PI; // shared with path
         public double maxAngAccel = Math.PI;
 
         // path controller gains
-        public double axialGain = 1.8;
-        public double lateralGain = 2;
-        public double headingGain = 2.3; // shared with turn
+        public double axialGain = 0.85;
+        public double lateralGain = 1.0;
+        public double headingGain = 4.5; // shared with turn
 
-        public double axialVelGain = 0.0;
+        public double axialVelGain = 0.8;
         public double lateralVelGain = 0.0;
-        public double headingVelGain = 0.0; // shared with turn
+        public double headingVelGain = 1.1; // shared with turn
     }
 
     public static Params PARAMS = new Params();
@@ -513,13 +513,21 @@ public final class MecanumDrive {
             }
         };
     }
+    public Action closeR(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawR.setPosition(0.37); return false;
+            }
+        };
+    }
 
 
     public Action openL(){
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                clawL.setPosition(0.45); return false;
+                clawL.setPosition(0.42); return false;
             }
         };
     }
@@ -527,16 +535,102 @@ public final class MecanumDrive {
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                clawR.setPosition(0.25); return false;
+                clawR.setPosition(0.28); return false;
             }
         };
     }
-    public Action gearupABit(){
+    public Action gearupABit() {
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-               gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                gear.setTargetPosition(126);
+                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gear.setTargetPosition(121);
+                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gear.setPower(0.333);
+                return false;
+            }
+        };
+    }
+    public Action gearUpABitLilForTwo(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gear.setTargetPosition(100);
+                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gear.setPower(0.333);
+                return false;
+            }
+        };
+    }
+    public Action gearUpABitLilForTwoTruss(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gear.setTargetPosition(80);
+                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gear.setPower(0.333);
+                return false;
+            }
+        };
+    }
+    public Action gearUpABitLilForTwoLow(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gear.setTargetPosition(80);
+                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gear.setPower(0.333);
+                return false;
+            }
+        };
+    }
+    public Action gearUpABitLilForTwoBLUECLOSE(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gear.setTargetPosition(100);
+                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gear.setPower(0.333);
+                return false;
+            }
+        };
+    }
+    public Action gearUpABitLilRED(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gear.setTargetPosition(127);
+                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gear.setPower(0.333);
+                return false;
+            }
+        };
+    }
+    public Action drivePos(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gear.setTargetPosition(120);
+                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gear.setPower(0.333);
+                pivot.setPosition(0.1);
+                return false;
+            }
+        };
+    }
+    public Action gearupABitLil(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gear.setTargetPosition(130);
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gear.setPower(0.333);
                 return false;
@@ -547,15 +641,16 @@ public final class MecanumDrive {
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                pivot.setPosition(0.8); return false;
+                pivot.setPosition(0.815); return false;
             }
         };
     }
+
     public Action pivotPickUp(){
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                pivot.setPosition(0.85); return false;
+                pivot.setPosition(0.87); return false;
             }
         };
     }
@@ -571,6 +666,7 @@ public final class MecanumDrive {
             }
         };
     }
+
 
 
 
