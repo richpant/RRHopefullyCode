@@ -575,12 +575,12 @@ public final class MecanumDrive {
             }
         };
     }
-    public Action gearUpABitLilForTwoLow(){
+    public Action gearUpABitLilForTwoLow(){ //was 80 changed it so hopefully it won't drop any pixels
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                gear.setTargetPosition(80);
+                gear.setTargetPosition(150);
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gear.setPower(0.333);
                 return false;
@@ -630,7 +630,19 @@ public final class MecanumDrive {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                gear.setTargetPosition(130);
+                gear.setTargetPosition(133);
+                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gear.setPower(0.333);
+                return false;
+            }
+        };
+    }
+    public Action gearupABitLill(){ //blue 2+3 zone 2 initial white grab
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gear.setTargetPosition(128);
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gear.setPower(0.333);
                 return false;
@@ -666,7 +678,42 @@ public final class MecanumDrive {
             }
         };
     }
-
+    public Action gearupABitLilB3(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gear.setTargetPosition(120);
+                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gear.setPower(0.333);
+                return false;
+            }
+        };
+    }
+    public Action gearupforB1(){ //was 80 changed it so hopefully it won't drop any pixels
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gear.setTargetPosition(140);
+                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gear.setPower(0.333);
+                return false;
+            }
+        };
+    }
+    public Action gearupABitLilred(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gear.setTargetPosition(128);
+                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gear.setPower(0.333);
+                return false;
+            }
+        };
+    }
 
 
 

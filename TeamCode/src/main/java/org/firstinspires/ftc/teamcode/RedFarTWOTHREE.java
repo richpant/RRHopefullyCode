@@ -99,6 +99,7 @@ public class RedFarTWOTHREE extends LinearOpMode{
     private Servo droneServo    = null; //es3
     private Servo clawL       = null; //es1
     private Servo clawR       = null; //es2
+    private Servo WheelServo = null; //es4
 
 
 
@@ -125,10 +126,12 @@ public class RedFarTWOTHREE extends LinearOpMode{
         droneServo  = hardwareMap.get(Servo.class, "droneServo");
         clawL = hardwareMap.get(Servo.class, "clawL");
         clawR = hardwareMap.get(Servo.class, "clawR");
+        WheelServo = hardwareMap.get(Servo.class, "WheelServo");
 
         // pivot.setPosition(.25);//1
         clawL.setPosition(.33);//0
-        clawR.setPosition(.37);//0
+        clawR.setPosition(.38);//0
+        WheelServo.setPosition(.85);
         huskyLens = hardwareMap.get(HuskyLens.class, "huskyLens");
 
         //TODO initialize the sensors and motors you added
@@ -184,17 +187,17 @@ public class RedFarTWOTHREE extends LinearOpMode{
                                     .stopAndAdd(geardown())//arm down
                                     //.waitSeconds(.5)
                                     .setTangent(180)
-                                    .splineTo(new Vector2d(27,-33),2*Math.PI/3)//drive to spike mark
+                                    .splineTo(new Vector2d(26,-32),2*Math.PI/3)//drive to spike mark
 //                                    .waitSeconds(.2)
                                     .stopAndAdd(drive.openL())//score purple
                                     //.waitSeconds(.5)
                                     .stopAndAdd(drive.gearupABitLil())
                                     .waitSeconds(.35)
-                                    .lineToYLinearHeading(-36,2*Math.PI/3)//back up
+                                    .lineToYLinearHeading(-36.5,2*Math.PI/3)//back up
                                     //.waitSeconds(.5)
                                     .stopAndAdd(drive.pivotPickUp())
                                    // .splineToSplineHeading(new Pose2d(-12,-48,0),Math.toRadians(180))
-                                    .splineTo(new Vector2d(5.75, -47),Math.toRadians(270))//line up with white stack
+                                    .splineTo(new Vector2d(5.5, -47),Math.toRadians(270))//line up with white stack
                                     .waitSeconds(.1)
                                     .lineToYConstantHeading(-50.2)//forward into white
                                     .waitSeconds(.1)
@@ -214,12 +217,12 @@ public class RedFarTWOTHREE extends LinearOpMode{
 //                                    .lineToXConstantHeading(25)//move over
 //                                    .lineToYConstantHeading(59.5)//back all the way up
 
-                                    .strafeTo(new Vector2d(28,59.8))
+                                    .strafeTo(new Vector2d(25,59.8))
                                     .waitSeconds(.8)
                                     .stopAndAdd(drive.openL())//score white
                                     .waitSeconds(.1)
                                     .stopAndAdd(drive.closeL())
-                                    .strafeTo(new Vector2d(37,62))
+                                    .strafeTo(new Vector2d(34,62))
                                     .waitSeconds(.3)
                                     .stopAndAdd(drive.openR())//score yellow
                                     .waitSeconds(.1)
@@ -232,16 +235,20 @@ public class RedFarTWOTHREE extends LinearOpMode{
 //                                    .stopAndAdd(drive.gearUpABitLilForTwo())
 //                                    .stopAndAdd(drive.pivotPickUp())
                                     .strafeTo(new Vector2d(8.5,-35))
-                                    .stopAndAdd(drive.gearUpABitLilForTwo())
+                                    .stopAndAdd(wheelservoupZ1())
                                     .stopAndAdd(drive.pivotPickUp())
-                                    .strafeTo(new Vector2d(8.5,-48.5))
+                                    .waitSeconds(0.2)
+                                    .strafeTo(new Vector2d(7.75,-48.5))
                                     //.stopAndAdd(drive.closeR())
                                     .stopAndAdd(drive.closeL())        //grab 2 whites
+                                    .waitSeconds(0.2)
+                                    .stopAndAdd(drive.gearUpABitLilForTwoLow()) //Bc it grabs from far stk for first white
+                                    .stopAndAdd(wheelservodown())
                                     .lineToYConstantHeading(37)
                                     .stopAndAdd(liftInHereSameClaw()) //claw 2nd time
                                     .stopAndAdd(flipToScore2ForTWO()) //pivot 2nd time
                                     //.turnTo(Math.toRadians(90))
-                                    .splineTo(new Vector2d(30.25,59),Math.toRadians(90)) //go to board 2nd time
+                                    .splineTo(new Vector2d(30.25,58),Math.toRadians(90)) //go to board 2nd time
                                     //.strafeTo(new Vector2d(34,65))
                                     //.stopAndAdd(drive.openR())
                                     .stopAndAdd(drive.openL()) //SCORE 2 WHITES
@@ -273,13 +280,13 @@ public class RedFarTWOTHREE extends LinearOpMode{
 //                                    .waitSeconds(.2)
                                     .stopAndAdd(drive.openL())//score purple
                                     //.waitSeconds(.5)
-                                    .stopAndAdd(drive.gearupABitLil())
+                                    .stopAndAdd(drive.gearupABitLilred())
                                     .waitSeconds(.35)
-                                    .strafeTo(new Vector2d(35.5,-40))//back up
+                                    .strafeTo(new Vector2d(36.5,-40))//back up
                                     //.waitSeconds(.5)
                                     .stopAndAdd(drive.pivotPickUp())
                                     // .splineToSplineHeading(new Pose2d(-12,-48,0),Math.toRadians(180))
-                                    .splineTo(new Vector2d(29, -47),Math.toRadians(270))//line up with white stack
+                                    .splineTo(new Vector2d(30.2, -47),Math.toRadians(270))//line up with white stack
                                     .waitSeconds(.1)
                                     .lineToYConstantHeading(-51.5)//forward into white
                                     .waitSeconds(.1)
@@ -304,11 +311,11 @@ public class RedFarTWOTHREE extends LinearOpMode{
                                     .stopAndAdd(drive.openL())//score white
                                     .waitSeconds(.2)
                                     //.stopAndAdd(drive.closeL())
-                                    .strafeTo(new Vector2d(33.5,60))
+                                    .strafeTo(new Vector2d(34,60))
                                     .waitSeconds(.1)
                                     .stopAndAdd(drive.openR())//score yellow
                                     .waitSeconds(.1)
-                                    .strafeTo(new Vector2d(9,57))
+                                    .strafeTo(new Vector2d(9,52))
                                     .stopAndAdd(drive.up())
                                     .stopAndAdd(gearend())
                                     .stopAndAdd(liftIn())
@@ -316,12 +323,16 @@ public class RedFarTWOTHREE extends LinearOpMode{
 //                                    .stopAndAdd(drive.gearUpABitLilForTwo())
 //                                    .stopAndAdd(drive.pivotPickUp())
                                     .strafeTo(new Vector2d(6.5,-35))
-                                    .stopAndAdd(drive.gearUpABitLilForTwo())
+                                    .stopAndAdd(wheelservoupZ2())
+
                                     .stopAndAdd(drive.pivotPickUp())
-                                    .strafeTo(new Vector2d(6.8,-47.5))
+                                    .waitSeconds(.2)
+                                    .strafeTo(new Vector2d(7.8,-47.5))
                                     //.stopAndAdd(drive.closeR())
                                     .stopAndAdd(drive.closeL())        //grab 2 whites
-                                    .waitSeconds(0.1)
+                                    .waitSeconds(0.15)
+                                    .stopAndAdd(drive.gearUpABitLilForTwoLow()) //Bc it grabs from far stk for first white
+                                    .stopAndAdd(wheelservodown())
                                     .lineToYConstantHeading(37)
                                     .stopAndAdd(liftInHereSameClaw()) //claw 2nd time
                                     .stopAndAdd(flipToScore2ForTWO()) //pivot 2nd time
@@ -371,7 +382,7 @@ public class RedFarTWOTHREE extends LinearOpMode{
                                     .strafeTo(new Vector2d(7.5,-40))//line up to go back
                                     .waitSeconds(.25)
                                     .lineToYConstantHeading(49)//drive to backboard
-                                    .strafeTo(new Vector2d(25,50))//strafe to score
+                                    .strafeTo(new Vector2d(29,50))//strafe to score
                                     //.waitSeconds(.5)
                                     .stopAndAdd(liftInHere3())
                                     .stopAndAdd(flipToScore2())
@@ -380,7 +391,7 @@ public class RedFarTWOTHREE extends LinearOpMode{
                                     .waitSeconds(1.2)
                                     .stopAndAdd(drive.openR())//score Yellow
                                     .waitSeconds(.1)
-                                    .strafeTo(new Vector2d(31,59.5))
+                                    .strafeTo(new Vector2d(33,59.5))
                                     .waitSeconds(.1)
                                     .stopAndAdd(drive.openL())//score White
                                     .waitSeconds(.1)
@@ -392,17 +403,21 @@ public class RedFarTWOTHREE extends LinearOpMode{
 //                                    .stopAndAdd(drive.gearUpABitLilForTwo())
 //                                    .stopAndAdd(drive.pivotPickUp())
                                     .strafeTo(new Vector2d(6.5,-35))
-                                    .stopAndAdd(drive.gearUpABitLilForTwo())
-                                    .stopAndAdd(drive.pivotPickUp())
-                                    .strafeTo(new Vector2d(5.5,-47.5))
+                                    .stopAndAdd(wheelservoupZ1())
+
+                            .stopAndAdd(drive.pivotPickUp())
+                                    .waitSeconds(0.2)
+                                    .strafeTo(new Vector2d(4.5,-47.5))
                                     //.stopAndAdd(drive.closeR())
                                     .stopAndAdd(drive.closeL())        //grab 2 whites
                                     .waitSeconds(0.2)
+                                    .stopAndAdd(drive.gearUpABitLilForTwoLow()) //Bc it grabs from far stk for first white
+                                    .stopAndAdd(wheelservodown())
                                     .strafeTo(new Vector2d(8,40))
                                     .stopAndAdd(liftInHereSameClaw()) //claw 2nd time
                                     .stopAndAdd(flipToScore2ForTWO()) //pivot 2nd time
                                     //.turnTo(Math.toRadians(90))
-                                    .splineTo(new Vector2d(34.25,59.35),Math.toRadians(90)) //go to board 2nd time
+                                    .splineTo(new Vector2d(34.25,58.55),Math.toRadians(90)) //go to board 2nd time
                                     //.strafeTo(new Vector2d(34,65))
                                     //.stopAndAdd(drive.openR())
                                     .stopAndAdd(drive.openL()) //SCORE 2 WHITES
@@ -548,7 +563,39 @@ public class RedFarTWOTHREE extends LinearOpMode{
             }
         };
     }
+    public Action wheelservoupZ1() {
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                WheelServo.setPosition(0.625); //bigger # = lower
 
+
+                return false;
+            }
+        };
+    }
+    public Action wheelservoupZ2() {
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                WheelServo.setPosition(0.608); //bigger # = lower | ~ 0.03 per pixel
+
+
+                return false;
+            }
+        };
+    }
+    public Action wheelservodown() {
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                WheelServo.setPosition(0.85);
+
+
+                return false;
+            }
+        };
+    }
 
 
 

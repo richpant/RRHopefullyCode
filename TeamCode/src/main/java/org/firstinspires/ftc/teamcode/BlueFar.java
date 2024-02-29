@@ -179,13 +179,13 @@ public class BlueFar extends LinearOpMode{
                 telemetry.addData("location?", blocks[i].x);// this gives you just x
                 //TODO ensure your x values of the husky lens are appropriate to the desired areas
                 //----------------------------1----------------------------\\
-                if (blocks[i].x < 100 && blocks[i].id ==2 && blocks[i].y <200) {
+                if (blocks[i].x < 100 && blocks[i].id ==2 && blocks[i].y <200 ) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(drive.up())//lower pivot
                                     .waitSeconds(.5)
                                     .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(5.5)
+                                    //.waitSeconds(5.5)
                                     .setTangent(0)
                                     .splineTo(new Vector2d(-28,-30.3),Math.PI/2)//drive to spike mark
                                     .stopAndAdd(drive.openL())//score purple
@@ -237,7 +237,7 @@ public class BlueFar extends LinearOpMode{
                                     .stopAndAdd(drive.up())//lower pivot
                                     //.waitSeconds(.5)
                                     .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(5.5)
+                                    //.waitSeconds(5.5)
                                     .setTangent(0)
                                     .strafeTo(new Vector2d(-37.4, -27))
                                     .stopAndAdd(drive.openL())//score purple
@@ -308,7 +308,7 @@ public class BlueFar extends LinearOpMode{
                                     .stopAndAdd(drive.up())//lower pivot
                                     .waitSeconds(.5)
                                     .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(5)
+                                    //.waitSeconds(5.5)
                                     .strafeTo(new Vector2d(-35,-28.75))
                                     .turnTo(Math.toRadians(270))
                                     .stopAndAdd(drive.openL())//score purple
@@ -322,6 +322,7 @@ public class BlueFar extends LinearOpMode{
                                     // .splineToSplineHeading(new Pose2d(-12,-48,0),Math.toRadians(180))
                                     .strafeTo(new Vector2d(-14.2,-47))//line up with white stack
                                     //.waitSeconds(.3)
+
                                     .lineToYConstantHeading(-48)//forward into white
                                     .waitSeconds(.2)
                                     .stopAndAdd(drive.closeL())//pick up white
@@ -355,7 +356,7 @@ public class BlueFar extends LinearOpMode{
 //                                    .stopAndAdd(liftInHere4())
                                     //waitSeconds(.5)
                                     .waitSeconds(.1)
-                                    .strafeTo(new Vector2d(-22.6, 57)) //strafe to score yellow
+                                    .strafeTo(new Vector2d(-21.6, 57)) //strafe to score yellow
                                     .stopAndAdd(liftInHere4())
                                     .waitSeconds(.3)
 

@@ -80,9 +80,9 @@ import java.util.concurrent.TimeUnit;
  *
  */
 
-@Autonomous(name="BlueFarTWOTHREE")
+@Autonomous(name="BlueFarTWOONE_BS2")
 
-public class BlueFarTWOTHREE extends LinearOpMode{
+public class BlueFarTWOONE_BS2 extends LinearOpMode{
 
     private final int READ_PERIOD = 1;
 
@@ -130,7 +130,7 @@ public class BlueFarTWOTHREE extends LinearOpMode{
         WheelServo = hardwareMap.get(Servo.class, "WheelServo");
         // pivot.setPosition(.25);//1
         clawL.setPosition(.33);//0
-        clawR.setPosition(.38);//0
+        clawR.setPosition(.37);//0
         WheelServo.setPosition(.85);//0
         huskyLens = hardwareMap.get(HuskyLens.class, "huskyLens");
 
@@ -192,18 +192,20 @@ public class BlueFarTWOTHREE extends LinearOpMode{
                                     .waitSeconds(.1)
                                     .lineToYLinearHeading(-37.5,Math.PI/2)//back up
                                     //.waitSeconds(.5)
-                                    .stopAndAdd(drive.gearupABitLil())
+                                    //.stopAndAdd(drive.gearupABitLil())
                                     //.waitSeconds(.5)
+                                    .stopAndAdd(wheelservoupTopGrab())
                                     .stopAndAdd(drive.pivotPickUp())
                                     // .splineToSplineHeading(new Pose2d(-12,-48,0),Math.toRadians(180))
                                     .splineTo(new Vector2d(-13.5, -47),Math.toRadians(270))//line up with white stack
                                     .waitSeconds(.1)
-                                    .lineToYConstantHeading(-50.7)//forward into white
+                                    .lineToYConstantHeading(-52.5)//forward into white
                                     .waitSeconds(.1)
                                     .stopAndAdd(drive.closeL())//pick up white
                                     .waitSeconds(.1)
 
                                     .strafeTo(new Vector2d(-4, -40))//line up to go back
+
                                     .waitSeconds(.1)
                                     //.lineToYConstantHeading(45)//drive to backboard
                                     //.waitSeconds(.1)
@@ -212,9 +214,11 @@ public class BlueFarTWOTHREE extends LinearOpMode{
                                     //.waitSeconds(.5)
                                     .stopAndAdd(flipToScoreONE())
                                     .waitSeconds(.1)
-                                    .strafeTo(new Vector2d(-32, 48))//strafe to score yellow
+
+                                    .strafeTo(new Vector2d(-31.75, 48))//strafe to score yellow
                                     .waitSeconds(.1)
                                     .lineToYConstantHeading(57)//forward a bit
+                                    .stopAndAdd(wheelservodown())
                                     //.waitSeconds(.5)
 //                                    .stopAndAdd(liftInHere2())
 //                                    .waitSeconds(.5)
@@ -253,32 +257,29 @@ public class BlueFarTWOTHREE extends LinearOpMode{
                                     .waitSeconds(0.1)
 //                                    .stopAndAdd(drive.gearUpABitLilForTwo())
 //                                    .stopAndAdd(drive.pivotPickUp())
-                                    .strafeTo(new Vector2d(-6, -25))
+                                    .strafeTo(new Vector2d(-8, -25))
                                             .stopAndAdd(wheelservoupZ1())
 
                                     .stopAndAdd(drive.pivotPickUp())
                                     .waitSeconds(.2)
-                                            .strafeTo(new Vector2d(-13.7, -46.3))
+                                            .strafeTo(new Vector2d(-14.7, -47.2
+                                            ))
                                             .waitSeconds(.1)
                                     .stopAndAdd(drive.closeR())        //grab 2 whites
                                     .waitSeconds(0.2)
-                                            .stopAndAdd(drive.gearUpABitLilForTwoLow()) //Bc it grabs from far stk for first white
+                                            //.stopAndAdd(drive.gearUpABitLilForTwoLow()) //Bc it grabs from far stk for first white
                                             .stopAndAdd(wheelservodown())
                                     .strafeTo(new Vector2d(-8, -44.5))
-                                    .strafeTo(new Vector2d(-6, 40))
-                                    .stopAndAdd(liftInHereSameClaw()) //claw 2nd time
-                                    .stopAndAdd(flipToScore2ForTWO()) //pivot 2nd time
-                                    //.turnTo(Math.toRadians(90))
-                                    .splineTo(new Vector2d(-18.5, 61.5), Math.toRadians(90)) //go to board 2nd time
-                                    //.strafeTo(new Vector2d(34,65))
-                                    //.stopAndAdd(drive.openR())
+                                    .strafeTo(new Vector2d(-8, 25))
+                                            .turnTo(Math.toRadians(90))
+                                            .strafeTo(new Vector2d(-16, 50))
                                     .stopAndAdd(drive.openR()) //SCORE 2 WHITES
-                                    .waitSeconds(.6)
+
                                     .stopAndAdd(liftIn())
                                     //.waitSeconds(.3)
-                                    .strafeTo(new Vector2d(-15, 55))
-                                    .stopAndAdd(drive.up())
-                                    .stopAndAdd(gearend())
+                                    //.strafeTo(new Vector2d(-7.5, 58))
+                                    //.stopAndAdd(drive.up())
+                                    //.stopAndAdd(gearend())
 //                                    .stopAndAdd(liftIn())
                                     //.turnTo(Math.toRadians(270))
 
@@ -301,12 +302,12 @@ public class BlueFarTWOTHREE extends LinearOpMode{
                                     .waitSeconds(.1)
                                     .stopAndAdd(drive.gearupABitLill())
                                     //.waitSeconds(.3)
-                                    //.stopAndAdd(wheelservoupZ2first())
+                                   // .stopAndAdd(wheelservoupZ2first())
                                     .stopAndAdd(drive.pivotPickUp())
                                     // .splineToSplineHeading(new Pose2d(-12,-48,0),Math.toRadians(180))
                                     .splineTo(new Vector2d(-25, -47), Math.toRadians(270))//line up with white stack | x was 25.7
                                     .waitSeconds(.1)
-                                    .lineToYConstantHeading(-49)//49
+                                    .lineToYConstantHeading(-49.3)//49
                                     .waitSeconds(.1)
                                     .stopAndAdd(drive.closeL())//pick up white
                                     .waitSeconds(.1)
@@ -316,11 +317,11 @@ public class BlueFarTWOTHREE extends LinearOpMode{
                                     //.lineToYConstantHeading(45)//drive to backboard
                                     //.waitSeconds(.1)
                                     .lineToYConstantHeading(40)//forward a bit
-                                    .stopAndAdd(liftInHere2())
+                                    .stopAndAdd(liftInHere())
                                     //.waitSeconds(.5)
                                     .stopAndAdd(flipToScoreONE())
                                     //.waitSeconds(.1)
-                                    .strafeTo(new Vector2d(-26.5, 48))//strafe to score yellow
+                                    .strafeTo(new Vector2d(-27.5, 48))//strafe to score yellow
                                     .waitSeconds(.1)
                                     .lineToYConstantHeading(55)//forward a bit
 
@@ -359,28 +360,21 @@ public class BlueFarTWOTHREE extends LinearOpMode{
 
                                     .stopAndAdd(drive.pivotPickUp())
                                     .waitSeconds(.2)
-                                    .strafeTo(new Vector2d(-13, -46.7))
-                                    //.strafeTo(new Vector2d(-8.7, -45.2))
+                                    .strafeTo(new Vector2d(-14.2, -48.8))
                                     .waitSeconds(.1)
                                     .stopAndAdd(drive.closeR())        //grab 2 whites
-                                    .waitSeconds(0.15)
+                                    .waitSeconds(0.2)
                                     .stopAndAdd(drive.gearUpABitLilForTwoLow()) //Bc it grabs from far stk for first white
                                     .stopAndAdd(wheelservodown())
-                                    .strafeTo(new Vector2d(-8.7, -40.5))
-                                    .strafeTo(new Vector2d(-5, 40))
-                                    .stopAndAdd(liftInHereSameClaw()) //claw 2nd time
-                                    .stopAndAdd(flipToScore2ForTWO()) //pivot 2nd time
-                                    //.turnTo(Math.toRadians(90))
-                                    .splineTo(new Vector2d(-15.5, 60.5), Math.toRadians(90)) //go to board 2nd time
+                                    .strafeTo(new Vector2d(-8, -44.5))
+                                    .strafeTo(new Vector2d(-6, 40))
+                                    .turnTo(Math.toRadians(90))
+                                    .strafeTo(new Vector2d(-5, 55))
                                     //.strafeTo(new Vector2d(34,65))
                                     //.stopAndAdd(drive.openR())
                                     .stopAndAdd(drive.openR()) //SCORE 2 WHITES
-                                    .waitSeconds(.6)
+                                    .waitSeconds(.1)
                                     .stopAndAdd(liftIn())
-                                    //.waitSeconds(.3)
-                                    .strafeTo(new Vector2d(-15, 55))
-                                    .stopAndAdd(drive.up())
-                                    .stopAndAdd(gearend())
 //                                    .stopAndAdd(liftIn())
                                     //.turnTo(Math.toRadians(270))
                                     .build());
@@ -410,7 +404,7 @@ public class BlueFarTWOTHREE extends LinearOpMode{
                                     .strafeTo(new Vector2d(-14.1,-47))//line up with white stack
                                     //.waitSeconds(.3)
                                     .lineToYConstantHeading(-47.5)//forward into white
-                                    .waitSeconds(.2)
+                                    .waitSeconds(.1)
                                     .stopAndAdd(drive.closeL())//pick up white
                                     .waitSeconds(.1)
                                     .lineToY(-40)
@@ -466,31 +460,24 @@ public class BlueFarTWOTHREE extends LinearOpMode{
                                     .strafeTo(new Vector2d(-8, -25))
                                     .stopAndAdd(wheelservoupZ3())
 
-                                    .stopAndAdd(drive.pivotPickUp())
-                                    .waitSeconds(.1)
-                                    .strafeTo(new Vector2d(-14.4, -46.3))
-                                    //.strafeTo(new Vector2d(-8.7, -45.2))
-                                    .waitSeconds(.1)
-                                    .stopAndAdd(drive.closeR())        //grab 2 whites
-                                    .waitSeconds(0.15)
-                                    .stopAndAdd(drive.gearUpABitLilForTwoLow()) //Bc it grabs from far stk for first white
-                                    .stopAndAdd(wheelservodown())
-                                    .strafeTo(new Vector2d(-8, -40.5))
-                                    .strafeTo(new Vector2d(-5, 40))
-                                    .stopAndAdd(liftInHereSameClaw()) //claw 2nd time
-                                    .stopAndAdd(flipToScore2ForTWO()) //pivot 2nd time
-                                    //.turnTo(Math.toRadians(90))
-                                    .splineTo(new Vector2d(-15.5, 61), Math.toRadians(90)) //go to board 2nd time
-                                    //.strafeTo(new Vector2d(34,65))
-                                    //.stopAndAdd(drive.openR())
-                                    .stopAndAdd(drive.openR()) //SCORE 2 WHITES
-                                    .stopAndAdd(drive.openL())
-                                    .waitSeconds(.4)
-                                    .stopAndAdd(liftIn())
-                                    //.waitSeconds(.3)
-                                    .strafeTo(new Vector2d(-15, 55))
-                                    .stopAndAdd(drive.up())
-                                    .stopAndAdd(gearend())
+                                   .stopAndAdd(drive.pivotPickUp())
+                                   .waitSeconds(.2)
+                                   .strafeTo(new Vector2d(-14.2, -47.6))
+                                   .waitSeconds(.1)
+                                   .stopAndAdd(drive.closeR())        //grab 2 whites
+                                   .waitSeconds(0.2)
+                                   .stopAndAdd(drive.gearUpABitLilForTwoLow()) //Bc it grabs from far stk for first white
+                                   .stopAndAdd(wheelservodown())
+                                   .strafeTo(new Vector2d(-8, -44.5))
+                                   .strafeTo(new Vector2d(-6, 40))
+                                   .turnTo(Math.toRadians(90))
+                                   .strafeTo(new Vector2d(-5, 55))
+                                   //.strafeTo(new Vector2d(34,65))
+                                   //.stopAndAdd(drive.openR())
+                                   .stopAndAdd(drive.openR()) //SCORE 2 WHITES
+                                   .strafeTo(new Vector2d(-5, 52))
+                                   .waitSeconds(.2)
+                                   .stopAndAdd(liftIn())
 //                                    .stopAndAdd(liftIn())
                                     //.turnTo(Math.toRadians(270))
                                     .build());
@@ -523,9 +510,9 @@ public class BlueFarTWOTHREE extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                lift.setTargetPosition(-650);
+                lift.setTargetPosition(-800);
                 lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                lift.setPower(0.7);
+                lift.setPower(0.9);
                 return false;
             }
         };
@@ -556,7 +543,7 @@ public class BlueFarTWOTHREE extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                lift.setTargetPosition(950);
+                lift.setTargetPosition(1200);
                 lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift.setPower(0.7);
                 return false;
@@ -570,7 +557,7 @@ public class BlueFarTWOTHREE extends LinearOpMode{
                 pivot.setPosition(0.28);
                 gear.setTargetPosition(795);
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gear.setPower(0.22);
+                gear.setPower(0.28);
 
                 return false;
             }
@@ -582,7 +569,7 @@ public class BlueFarTWOTHREE extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                lift.setTargetPosition(-840);
+                lift.setTargetPosition(-1100);
                 lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift.setPower(0.9);
                 return false;
@@ -658,6 +645,17 @@ public class BlueFarTWOTHREE extends LinearOpMode{
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gear.setPower(0.333);
                 pivot.setPosition(0.75); //was .74
+
+
+                return false;
+            }
+        };
+    }
+    public Action wheelservoupTopGrab() {
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                WheelServo.setPosition(0.575); //bigger # = lower
 
 
                 return false;

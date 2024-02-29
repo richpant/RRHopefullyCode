@@ -159,7 +159,7 @@ public class Drive extends LinearOpMode {
 
             //----------------------------droneServo----------------------------\\
 
-            if (gamepad1.a) {
+            if (gamepad1.dpad_down) {
                 droneServo.setPosition(1); }
             else {droneServo.setPosition(0.6); }
 
@@ -190,7 +190,7 @@ public class Drive extends LinearOpMode {
             if (gamepad2.dpad_left) { //manuel gear down FOR HANG ONLY
                 geardownHANG(-1); }
             if (gamepad2.left_trigger > .1) {
-                tfil(100, -1);
+                tfil(150, -1);
                 telemetry.addData("lift", lift.getCurrentPosition());}
             if (gamepad2.right_trigger > .1) {
                 tfil(200, 1);
@@ -227,7 +227,11 @@ public class Drive extends LinearOpMode {
             if (gamepad2.a) {
                 tfilPosition(50, 1);
                 raegPosition(5, 0.2);//25
-                pivot.setPosition(0.835); }
+                pivot.setPosition(0.835);
+                //if (lift.getCurrentPosition() <= 50) {
+                //
+                //    lift.setPower(0);}
+            }
 
             //----------Driver1-Reset----------\\
             if (gamepad1.b) {
